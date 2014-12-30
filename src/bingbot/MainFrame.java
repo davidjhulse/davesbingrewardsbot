@@ -19,6 +19,7 @@ public class MainFrame extends JFrame {
     private final Actions actions = new Actions();
     
     private JTextField searches;
+    private JTextField mobileSearches;
     private JTextField usernameField;
     private JTextField passwordField;
     private JTextField usersField;
@@ -27,6 +28,7 @@ public class MainFrame extends JFrame {
     private JButton newUser;
     
     private JLabel label;
+    private JLabel labelMobile;
     private JLabel usernameLabel;
     private JLabel passwordLabel;
     private JLabel noUsersLabel;
@@ -56,9 +58,11 @@ public class MainFrame extends JFrame {
         userPanel = new JPanel();
         userPanel.setBounds(0,0, 200,400);
         label = new JLabel("# of Searches");
+        labelMobile = new JLabel("Mobile Search #");
         usernameLabel = new JLabel("Username");
         passwordLabel = new JLabel("Password");
         noUsersLabel = new JLabel("Number of Users");
+        mobileSearches = new JTextField(5);
         searches = new JTextField(5);
         usernameField = new JTextField(10);
         passwordField = new JTextField(10);
@@ -77,6 +81,8 @@ public class MainFrame extends JFrame {
         pane.add(usersField);
         pane.add(label);
         pane.add(searches);
+        pane.add(labelMobile);
+        pane.add(mobileSearches);
         pane.add(submit);
     }
     
@@ -94,7 +100,8 @@ public class MainFrame extends JFrame {
             if (command.equals("Submit")) {
                 System.out.println("Searching...");
                 try {
-                    new BingBot().search(Integer.parseInt(usersField.getText()),Integer.parseInt(searches.getText()),new File("./files/users"));
+                    new BingBot(false).search(Integer.parseInt(usersField.getText()),Integer.parseInt(searches.getText()),new File("./files/users"));
+                    new BingBot(true).searchMobile(Integer.parseInt(usersField.getText()),Integer.parseInt(mobileSearches.getText()),new File("./files/users"));
                 } catch (IOException ex) {
                     Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InterruptedException ex) {
@@ -107,6 +114,7 @@ public class MainFrame extends JFrame {
                 System.out.println("Creating New User...");
                 try {
                     createNewUser(usernameField.getText(),passwordField.getText());
+                    usernameField.setText(""); passwordField.setText("");
                 } catch (IOException ex) {
                     Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
